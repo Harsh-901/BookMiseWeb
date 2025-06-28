@@ -5,16 +5,12 @@ services:
     plan: free
     region: oregon
 
-    # ── Where your backend code actually lives ───────────────────────────────────
     rootDir: Backend            # delete this line if the folder doesn’t exist
 
-    # ── Build & launch ───────────────────────────────────────────────────────────
     buildCommand: pip install -r requirements.txt
     # Bind Gunicorn to the port Render provides
-    startCommand: >
-      gunicorn --bind 0.0.0.0:$PORT "main:create_app()"
+    startCommand: gunicorn main:app
 
-    # ── Environment variables (safe‑by‑default) ─────────────────────────────────
     envVars:
       - key: PYTHON_VERSION      # Render reads this to pick the image
         value: "3.10"
