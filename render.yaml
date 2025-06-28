@@ -3,17 +3,14 @@ services:
     name: bookmise-backend
     env: python
     plan: free
-    region: oregon          # or singapore / frankfurt …
-
-    rootDir: backend        # ← Render will cd into /backend
-
-    pythonVersion: 3.10     # preferred way to pin Python
-
+    region: oregon
+    workingDir: backend             # ✅ Move this up here
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn main:app
-
     envVars:
       - key: SUPABASE_URL
         value: https://ywrtpfmuctnflfbhplmb.supabase.co
       - key: SUPABASE_KEY
-        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl3cnRwZm11Y3RuZmxmYmhwbG1iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0Mjc4NDUsImV4cCI6MjA2NjAwMzg0NX0.nPErWM1ydA1syG1NtCAHFHCUTDT2-31rW_4hQFSz7aM
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+      - key: PYTHON_VERSION
+        value: 3.10
