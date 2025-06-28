@@ -1,3 +1,4 @@
+# render.yaml — deploy‑ready
 services:
   - type: web
     name: bookmise-backend
@@ -5,23 +6,19 @@ services:
     plan: free
     region: oregon
 
-    rootDir: Backend            # delete this line if the folder doesn’t exist
+    rootDir: Backend                
 
     buildCommand: pip install -r requirements.txt
-    # Bind Gunicorn to the port Render provides
-    startCommand: gunicorn main:app
-
+    startCommand: >
+      gunicorn --bind 0.0.0.0:$PORT main:app   
     envVars:
-      - key: PYTHON_VERSION      # Render reads this to pick the image
+      - key: PYTHON_VERSION
         value: "3.10"
 
       - key: SUPABASE_URL
         value: https://ywrtpfmuctnflfbhplmb.supabase.co
 
-      # 🔒 keep the secret in the dashboard, not in git
       - key: SUPABASE_SERVICE_KEY
-        sync: false              # prevents Blueprint from overwriting dashboard
-        # value: ""              # leave empty; paste in Render → Dashboard
-
+        sync: false           
       - key: PYTHONUNBUFFERED
         value: "1"
