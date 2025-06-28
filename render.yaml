@@ -4,13 +4,17 @@ services:
     env: python
     plan: free
     region: oregon
-    workingDir: backend             # ✅ Move this up here
+
+    rootDir: backend            # ← this is the right field name
+    pythonVersion: 3.10
+
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn main:app
+
     envVars:
       - key: SUPABASE_URL
         value: https://ywrtpfmuctnflfbhplmb.supabase.co
       - key: SUPABASE_KEY
         value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-      - key: PYTHON_VERSION
-        value: 3.10
+      - key: PYTHONUNBUFFERED        # keeps logs streaming
+        value: "1"
