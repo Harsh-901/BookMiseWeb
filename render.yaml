@@ -1,12 +1,12 @@
 services:
   - type: web
     name: bookmise-backend
-    env: python
+    runtime: python          # ✅ use runtime, not env
     plan: free
     region: oregon
 
-    rootDir: backend            # ← this is the right field name
-    pythonVersion: 3.10
+    rootDir: backend         # deploy inside /backend
+    pythonVersion: 3.10      # now Render accepts this
 
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn main:app
@@ -15,6 +15,7 @@ services:
       - key: SUPABASE_URL
         value: https://ywrtpfmuctnflfbhplmb.supabase.co
       - key: SUPABASE_KEY
-        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-      - key: PYTHONUNBUFFERED        # keeps logs streaming
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl3cnRwZm11Y3RuZmxmYmhwbG1iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0Mjc4NDUsImV4cCI6MjA2NjAwMzg0NX0.nPErWM1ydA1syG1NtCAHFHCUTDT2-31rW_4hQFSz7aM
+
+      - key: PYTHONUNBUFFERED
         value: "1"
