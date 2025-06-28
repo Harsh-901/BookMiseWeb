@@ -553,3 +553,73 @@ def delete_comment(comment_id):
     except Exception as e:
         print("Error deleting comment:", e)
         return jsonify({"error": str(e)}), 500
+
+
+# ── 1.  Add parent_id column once (run in Supabase SQL) ─────────
+"""
+alter table public.comments
+add column if not exists parent_id uuid null references comments(id);
+create index if not exists comments_parent_id_idx on public.comments(parent_id);
+"""
+
+# ── 2.  EDIT POST route (for “Edit” button) ─────────────────────
+@main.route("/api/posts/<post_id>", methods=["PUT"])
+def update_post(post_id):
+    data      = request.get_json()
+    user_id   = data.get("user_id")
+    new_body  = data.get("content")
+
+    if not user_id or not new_body:
+        return jsonify({"error": "user_id & content required"}), 400
+
+    try:
+        resp = (supabase.table("posts")
+                 .update({"content": new_body})
+                 .eq("id", post_id)
+                 .eq("user_id", user_id)      # safeguard
+                 .execute())
+        return jsonify(resp.data), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# ── 3.  UPDATED comment endpoints for parent_id support ─────────
+@main.route("/api/comments", methods=["POST"])
+def add_comment():
+    data       = request.get_json()
+    user_id    = data.get("user_id")
+    post_id    = data.get("post_id")
+    content    = data.get("content")
+    parent_id  = data.get("parent_id")
+
+    if not user_id or not post_id or not content:
+        return jsonify({"error": "user_id, post_id, content required"}), 400
+
+    insert_data = {"user_id": user_id, "post_id": post_id, "content": content}
+    if parent_id:
+        try: uuid.UUID(str(parent_id))
+        except ValueError:
+            return jsonify({"error": "Invalid parent_id"}), 400
+        insert_data["parent_id"] = parent_id
+
+    try:
+        resp = supabase.table("comments").insert(insert_data).execute()
+        return jsonify(resp.data), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@main.route("/api/comments", methods=["GET"])
+def get_comments():
+    post_id = request.args.get("post_id")
+    if not post_id:
+        return jsonify({"error": "post_id query param required"}), 400
+    try:
+        resp = (supabase.table("comments")
+                         .select("*")
+                         .eq("post_id", post_id)
+                         .order("created_at", desc=False)
+                         .execute())
+        return jsonify(resp.data), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
