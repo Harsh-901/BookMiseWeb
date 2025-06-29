@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.2",
+    "axios": "^1.10.0",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.19.1",
+    "lucide-react": "^0.525.0",
     "pdfjs-dist": "^5.3.31",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
