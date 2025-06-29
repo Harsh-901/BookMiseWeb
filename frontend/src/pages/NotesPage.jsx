@@ -138,7 +138,7 @@ export default function NotesPage() {
             )}
           </button>
 
-          {session && <span className={`text-xs ${theme.muted}`}>{session.user.email}</span>}
+          {/* {session && <span className={`text-xs ${theme.muted}`}>{session.user.email}</span>} */}
         </div>
       </div>
       <div className={`h-px bg-gradient-to-r ${theme.gradientBorder} mx-8`}/>

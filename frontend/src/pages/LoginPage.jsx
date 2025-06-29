@@ -64,7 +64,7 @@ const LoginPage = () => {
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('../public/img/logBg1.jpg')`
+          backgroundImage: `url('/img/logBg2.jpg')`
         }}
       />
 
@@ -80,7 +80,7 @@ const LoginPage = () => {
             className="absolute inset-0 rounded-full animate-pulse"
             style={{
               background:
-                'radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 50%, transparent 70%)',
+                'radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.2) 50%, transparent 70%)',
               filter: 'blur(20px)',
               transform: 'scale(1.2)',
             }}
